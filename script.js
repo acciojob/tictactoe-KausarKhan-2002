@@ -2,9 +2,9 @@
 
 let message = document.querySelector(".message");
 let boxes = document.querySelectorAll(".box");
-let player1 = document.getElementById("player1");
-let player2 = document.getElementById("player2");
-let startGame = document.querySelector(".startGame");
+let player1 = document.getElementById("player-1");
+let player2 = document.getElementById("player-2");
+let startGame = document.getElementById("submit")
 let playersName = document.querySelector(".playersName");
 let boxContainer = document.querySelector(".box_container");
 
