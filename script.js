@@ -83,9 +83,9 @@ const winner = () => {
           box.disabled = true;
 
           if (pattern1.innerText == "x") {
-            message.firstElementChild.innerText = `${player1Name} congratulations you won!`;
+            message.firstElementChild.innerText = `${player1Name}, congratulations you won!`;
           } else {
-            message.lastElementChild.innerText = `${player2Name} congratulations you won!`;
+            message.lastElementChild.innerText = `${player2Name}, congratulations you won!`;
           }
 
           pattern1.style.color = "green";
