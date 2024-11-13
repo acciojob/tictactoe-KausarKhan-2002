@@ -1,6 +1,6 @@
 //your JS code here. If required.
 
-let currentPlayer = 'X';
+let currentPlayer = 'x';
 let player1 = '';
 let player2 = '';
 
@@ -40,14 +40,14 @@ function handleCellClick(e) {
 
     // Check for a win or tie
     if (checkWin()) {
-        document.getElementById('message').textContent = `${currentPlayer === 'X' ? player1 : player2}, congratulations you won!`;
+        document.getElementById('message').textContent = `${currentPlayer === 'x' ? player1 : player2} congratulations you won!`;
         disableBoard();
     } else if (checkTie()) {
         document.getElementById('message').textContent = "It's a tie!";
     } else {
         // Switch players and update the turn message
-        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        document.getElementById('message').textContent = `${currentPlayer === 'X' ? player1 : player2}, you're up`;
+        currentPlayer = currentPlayer === 'x' ? 'o' : 'x';
+        document.getElementById('message').textContent = `${currentPlayer === 'x' ? player1 : player2}, you're up`;
     }
 }
 
