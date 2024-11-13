@@ -40,7 +40,7 @@ function handleCellClick(e) {
 
     // Check for a win or tie
     if (checkWin()) {
-        document.getElementById('message').textContent = `${currentPlayer === 'x' ? player1 : player2} congratulations you won!`;
+        document.getElementById('message').textContent = `${currentPlayer === 'x' ? player1 : player2}, congratulations you won!`;
         disableBoard();
     } else if (checkTie()) {
         document.getElementById('message').textContent = "It's a tie!";
