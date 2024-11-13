@@ -1,67 +1,83 @@
 /*  your css code here. If applicable */
 
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    font-family: Helvetica;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #fff;
 }
 
 .container {
-    width: 450px;
-    margin: 0 auto;
     text-align: center;
-    padding: 30px 0;
+}
+
+h1 {
+    font-size: 3rem;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    margin-bottom: 20px;
+}
+
+.player-input, .game-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 label {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+    margin-top: 10px;
 }
 
-#player-1,
-#player-2 {
-    background-color: #f1f1f1;
-    border: none;
-    outline: none;
-    box-shadow: inset 0 0 15px 3px #ccc;
-    padding: 5px 10px;
-    font-size: 1.1rem;
-}
-
-#submit {
-    width: 35%;
-    padding: 5px 0;
-    font-size: 1.1rem;
-    background: none;
-    border: 1px solid;
-    border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    -ms-border-radius: 10px;
-    -o-border-radius: 10px;
-    cursor: pointer;
-}
-
-.box_container {
-    display: none;
-}
-
-.boxes {
-    display: grid;
-	grid-template-columns: repeat(3, 1fr);
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-top: .8rem;
-}
-
-.box {
-    height: 100px;
-    font-size: 3rem;
+input {
+    width: 300px;
+    padding: 10px;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
     text-align: center;
-    border: 1px solid black;
-    outline: none;
-    background-color: #eee;
-    box-shadow: inset 0 0 20px 10px #ccc;
+    border: 2px solid #000;
+    border-radius: 5px;
 }
 
-.box {
-    color: coral;
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border: 2px solid #000;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border: 2px solid #000;
+}
+
+.message {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    font-weight: bold;
 }

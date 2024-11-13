@@ -1,151 +1,74 @@
 //your JS code here. If required.
 
-let message = document.querySelector(".message");
-let boxes = document.querySelectorAll(".box");
-let player1 = document.getElementById("player-1");
-let player2 = document.getElementById("player-2");
-let startGame = document.getElementById("submit");
-let playersName = document.querySelector(".playersName");
-let boxContainer = document.querySelector(".box_container");
+let currentPlayer = 'X';
+let player1 = '';
+let player2 = '';
 
-// All possible winner patterns in 2d Array.
-let patterns = [
-  [0, 1, 2],
-  [0, 3, 6],
-  [0, 4, 8],
-  [1, 4, 7],
-  [2, 1, 0],
-  [2, 5, 8],
-  [2, 4, 6],
-  [5, 4, 3],
-  [6, 7, 8],
-  [6, 3, 0],
-  [6, 4, 2],
-  [7, 4, 1],
-  [8, 7, 6],
-  [8, 5, 2],
-  [8, 4, 0],
-];
+document.getElementById('submit').addEventListener('click', function () {
+    // Get player names
+    player1 = document.getElementById('player-1').value;
+    player2 = document.getElementById('player-2').value;
 
-// Show the turn of player according to given the values of x or y.
-let turn = true;
+    // Ensure both names are provided
+    if (player1 && player2) {
+        // Hide the player input form and show the game board
+        document.getElementById('player-input').style.display = 'none';
+        document.getElementById('game-board').style.display = 'flex';
 
-// Click button to start the game by player name
-startGame.addEventListener("click", () => {
-  console.log(player1.value + " " + player2.value);
-
-  //   message.firstElementChild.innerHTML = `${player1Name}, you're up`;
-  //   message.lastElementChild.innerHTML = `${player2Name}, you're up`;
-  //   message.lastElementChild.style.display = "none";
-  message.innerHTML = player1.value;
-
-  if (player1.value != "" && player2.value != "") {
-    playersName.style.display = "none";
-    boxContainer.style.display = "block";
-  } else {
-    alert("Please fill player name");
-  }
-});
-
-// Show the turn of player name.
-const playerTurn = (turn) => {
-  //   if (turn) {
-  //     message.firstElementChild.style.display = "block";
-  //     message.lastElementChild.style.display = "none";
-  //   } else {
-  //     message.firstElementChild.style.display = "none";
-  //     message.lastElementChild.style.display = "block";
-  //   }
-
-  if (turn) {
-    message.innerHTML = player1.value;
-  } else {
-    message.innerHTML = player2.value;
-  }
-};
-
-// Match the pattern to make winner between player1 and player2.
-const winner = () => {
-  let win = false;
-  patterns.forEach((pattern) => {
-    let pattern1 = boxes[pattern[0]];
-    let pattern2 = boxes[pattern[1]];
-    let pattern3 = boxes[pattern[2]];
-
-    if (pattern1.innerText && pattern2.innerText && pattern3.innerText) {
-      if (
-        pattern1.innerText == pattern2.innerText &&
-        pattern2.innerText == pattern3.innerText
-      ) {
-        boxes.forEach((box) => {
-          box.disabled = true;
-
-          if (pattern1.innerText == "x") {
-            // message.firstElementChild.innerText = `${player1Name} congratulations you won!`;
-            message.innerHTML = player1.value + "winner";
-          } else {
-            // message.lastElementChild.innerText = `${player2Name} congratulations you won!`;
-            message.innerHTML = player2.value + "winner";
-          }
-
-          pattern1.style.color = "green";
-          pattern2.style.color = "green";
-          pattern3.style.color = "green";
-          win = true;
-        });
-      }
-    }
-  });
-
-  if (win) return true;
-  else return false;
-};
-
-const disableOnMatchDraw = () => {
-  let count = 0;
-
-  boxes.forEach((box) => {
-    if (box.innerText != "") {
-      count++;
-    }
-  });
-
-  console.log(count, boxes.length);
-  if (count == boxes.length) {
-    boxes.forEach((box) => {
-      box.disabled = true;
-      box.style.opacity = ".7";
-      //   message.firstElementChild.style.display = "none";
-      //   message.lastElementChild.style.display = "none";
-
-      //   let span = document.createElement("span");
-      //   span.innerText = "Match Draw";
-      //   message.appendChild(span);
-
-      message.innerHTML = "Match draw";
-      return false;
-    });
-  }
-  return true;
-};
-
-// Main root where every box is unpacked one by one.
-boxes.forEach((box) => {
-  box.addEventListener("click", () => {
-    if (turn) {
-      box.innerHTML = "x";
-      turn = false;
-      box.style.color = "cornflowerblue";
+        // Display the turn message for the first player
+        document.getElementById('message').textContent = `${player1}, you're up`;
     } else {
-      box.innerHTML = "o";
-      turn = true;
+        alert("Please enter names for both players.");
+    }
+});
+
+// Add event listeners to each cell
+document.querySelectorAll('.cell').forEach(cell => {
+    cell.addEventListener('click', handleCellClick);
+});
+
+function handleCellClick(e) {
+    const cell = e.target;
+
+    // Check if the cell is already occupied
+    if (cell.textContent !== '') {
+        return;
     }
 
-    let boxFull = disableOnMatchDraw();
+    // Mark the cell with the current player's symbol
+    cell.textContent = currentPlayer;
 
-    let win = winner();
-    console.log(win);
+    // Check for a win or tie
+    if (checkWin()) {
+        document.getElementById('message').textContent = `${currentPlayer === 'X' ? player1 : player2}, congratulations you won!`;
+        disableBoard();
+    } else if (checkTie()) {
+        document.getElementById('message').textContent = "It's a tie!";
+    } else {
+        // Switch players and update the turn message
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        document.getElementById('message').textContent = `${currentPlayer === 'X' ? player1 : player2}, you're up`;
+    }
+}
 
-    if (win == false && boxFull == false) playerTurn(turn);
-  });
-});
+function checkWin() {
+    const winPatterns = [
+        [1, 2, 3], [4, 5, 6], [7, 8, 9],
+        [1, 4, 7], [2, 5, 8], [3, 6, 9],
+        [1, 5, 9], [3, 5, 7]
+    ];
+    
+    return winPatterns.some(pattern => {
+        return pattern.every(index => {
+            return document.getElementById(index).textContent === currentPlayer;
+        });
+    });
+}
+
+function checkTie() {
+    return Array.from(document.querySelectorAll('.cell')).every(cell => cell.textContent !== '');
+}
+
+function disableBoard() {
+    document.querySelectorAll('.cell').forEach(cell => cell.removeEventListener('click', handleCellClick));
+}
