@@ -1,73 +1,60 @@
 //your JS code here. If required.
 
-// DOM Elements
-const nameScreen = document.getElementById('nameScreen');
-const gameScreen = document.getElementById('gameScreen');
-const message = document.getElementById('message');
-const cells = document.querySelectorAll('.cell');
-const submitButton = document.getElementById('submit');
+document.getElementById("submit").addEventListener("click", startGame);
 
-let player1 = '';
-let player2 = '';
-let currentPlayer = 'X';
-let board = Array(9).fill(null);
-let gameActive = true;
+function startGame() {
+  const player1 = document.getElementById("player-1").value.trim();
+  const player2 = document.getElementById("player-2").value.trim();
 
-// Helper function to switch turns
-function switchTurn() {
-  currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-  message.textContent = `${currentPlayer === 'X' ? player1 : player2}, you're up!`;
+  if (!player1 || !player2) {
+    alert("Please enter names for both players.");
+    return;
+  }
+
+  document.querySelector(".input-section").style.display = "none";
+  document.querySelector(".game-section").style.display = "block";
+
+  let currentPlayer = player1;
+  const messageDiv = document.querySelector(".message");
+  messageDiv.textContent = `${currentPlayer}, you're up`;
+
+  const board = Array(9).fill(null);
+
+  const cells = document.querySelectorAll(".cell");
+  cells.forEach((cell) => {
+    cell.addEventListener("click", () => {
+      const id = parseInt(cell.id) - 1;
+
+      if (board[id] !== null || checkWinner(board)) return;
+
+      board[id] = currentPlayer === player1 ? "X" : "O";
+      cell.textContent = board[id];
+
+      if (checkWinner(board)) {
+        messageDiv.textContent = `${currentPlayer} congratulations you won!`;
+        cells.forEach((cell) => cell.style.pointerEvents = "none");
+        return;
+      }
+
+      currentPlayer = currentPlayer === player1 ? player2 : player1;
+      messageDiv.textContent = `${currentPlayer}, you're up`;
+    });
+  });
 }
 
-// Check for winning conditions
-function checkWinner() {
-  const winningCombinations = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-    [0, 4, 8], [2, 4, 6]             // Diagonals
+function checkWinner(board) {
+  const winConditions = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+    [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+    [0, 4, 8], [2, 4, 6],            // diagonals
   ];
 
-  for (const combination of winningCombinations) {
-    const [a, b, c] = combination;
-    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-      return board[a];
+  for (const condition of winConditions) {
+    const [a, b, c] = condition;
+    if (board[a] && board[a] === board[b] && board[b] === board[c]) {
+		board[a].style.background = "red"
+      return true;
     }
   }
-  return null;
+  return false;
 }
-
-// Handle cell click
-function handleCellClick(e) {
-  const cellIndex = parseInt(e.target.id) - 1;
-
-  if (board[cellIndex] || !gameActive) return;
-
-  board[cellIndex] = currentPlayer;
-  e.target.textContent = currentPlayer;
-
-  const winner = checkWinner();
-  if (winner) {
-    message.textContent = `${winner === 'X' ? player1 : player2}, congratulations, you won!`;
-    gameActive = false;
-  } else if (!board.includes(null)) {
-    message.textContent = "It's a tie!";
-    gameActive = false;
-  } else {
-    switchTurn();
-  }
-}
-
-// Initialize game on name submission
-submitButton.addEventListener('click', () => {
-  player1 = document.getElementById('player-1').value || 'Player 1';
-  player2 = document.getElementById('player-2').value || 'Player 2';
-
-  if (player1 && player2) {
-    nameScreen.style.display = 'none';
-    gameScreen.style.display = 'block';
-    message.textContent = `${player1}, you're up!`;
-  }
-});
-
-// Add event listeners to each cell
-cells.forEach(cell => cell.addEventListener('click', handleCellClick));

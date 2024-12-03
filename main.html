@@ -8,25 +8,20 @@
 
 <body>
 	<!-- the entire body must be written by student -->
-
-	<div class="container">
-		<h1>Tic Tac Toe</h1>
-    <!-- Name Input Screen -->
-    <div id="nameScreen">
-	  <label for="player-1">Player1 </label>
-      <input type="text" id="player-1" placeholder="enter name">
-		<br>
-		<label for="player-2">Player2</label>
-      <input type="text" id="player-2" placeholder="enter name">
-		<br><br>
+	 <div class="container">
+    <h1>TIC TAC TOE</h1>
+    <div class="input-section">
+      <label for="player-1">Player 1</label>
+      <input type="text" id="player-1" placeholder="Enter name">
+      <label for="player-2">Player 2</label>
+      <input type="text" id="player-2" placeholder="Enter name">
       <button id="submit">Start Game</button>
     </div>
-    
-    <!-- Game Screen -->
-    <div id="gameScreen" style="display: none;">
-      <div class="message" id="message">Player 1, you're up!</div>
+    <div class="game-section" style="display: none;">
+      <h1>TIC TAC TOE</h1>
+      <div class="message"></div>
       <div class="board">
-        <!-- 9 Cells for the Tic Tac Toe grid -->
+        <!-- 9 cells -->
         <div class="cell" id="1"></div>
         <div class="cell" id="2"></div>
         <div class="cell" id="3"></div>
